@@ -1,0 +1,122 @@
+
+#include <algorithm>
+#include <bits/stdc++.h>
+#include <iomanip>
+#include <iostream>
+#include  <math.h>
+#include <queue>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include<unordered_set>
+#include <set>
+#define clr(v,d) memset(v,d,sizeof(v))
+#define ll long long
+#define vll vector<ll>
+using namespace std;
+#define ld  long double
+const int Max_Size=100;
+template<class t>
+class Stack {
+    struct Node {
+        t data;
+        Node* next;
+    };
+    Node* head;
+    public:
+    Stack():head(NULL){}
+    ~Stack() {}
+    void push(t x) {
+        Node* temp = new Node;
+        if(temp == NULL) {
+            cout << "Stack Overflow" << endl;
+        }else{
+            temp->data = x;
+            temp->next = head;
+            head = temp;
+        }
+    }
+    bool IsEmpty() {
+        return head==NULL;
+    }
+    void Pop() {
+        if(IsEmpty()) {
+            cout << "Stack Underflow" << endl;
+        }else {
+            Node* temp = head;
+            head = head->next;
+            temp=temp->next = NULL;
+            delete temp;
+        }
+    }
+    void Pop(t&TopElement) {
+        if(IsEmpty()) {
+            cout << "Stack Underflow" << endl;
+        }else {
+            TopElement = head->data;
+            Node* temp = head;
+            head = head->next;
+            temp=temp->next = NULL;
+            delete temp;
+        }
+    }
+    t GetTop() {
+        if(IsEmpty()) {
+            cout << "Stack Underflow" << endl;
+        }else {
+            return head->data;
+        }
+    }
+    void Display() {
+        if(IsEmpty()) {
+            cout << "Stack Underflow" << endl;
+        }else {
+            Node* temp = head;
+            while(temp!=NULL) {
+                cout << temp->data << " ";
+                temp = temp->next;
+            }
+        }
+    }
+};
+bool CanPiared(char open,char close) {
+    if(open=='(' && close==')') {
+        return true;
+    }else if(open=='[' && close==']') {
+        return true;
+    }else if(open=='{' && close=='}') {
+        return true;
+    }
+    return false;
+}
+bool canBalanced(string Exp) {
+    Stack<char> stack;
+    for(int i=0;i<Exp.size();i++) {
+        if(Exp[i]=='(' || Exp[i]=='{' || Exp[i]=='[') {
+            stack.push(Exp[i]);
+        }else if(Exp[i]==')' || Exp[i]=='}' || Exp[i]==']') {
+            if(stack.IsEmpty()) {
+                return false;
+            }else if(!CanPiared(stack.GetTop(),Exp[i])) {
+                return false;
+            }
+            else {
+                stack.Pop();
+            }
+        }
+    }
+    return stack.IsEmpty();
+}
+int main() {
+string s;
+    cin>>s;
+    if(canBalanced(s)) {
+        cout<<"Balanced"<<endl;
+    }else {
+        cout<<"Not Balanced"<<endl;
+    }
+
+
+
+    return 0;
+}
